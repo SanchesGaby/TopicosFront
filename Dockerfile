@@ -4,8 +4,14 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-RUN npm run build
 
+ARG PORT
+ARG VITE_API_URL
+
+ENV PORT=$PORT
+ENV VITE_API_URL=$VITE_API_URL
+
+RUN npm run build
 # ESTÁGIO 2: Produção
 FROM nginx:alpine
 COPY nginx.conf.template /etc/nginx/templates/default.conf.template
